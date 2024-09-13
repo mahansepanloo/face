@@ -28,6 +28,9 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     def perform_destroy(self, instance):
         if instance.user == self.request.user:
             super().perform_destroy(instance)
+    def perform_update(self, instance):
+        if instance.user == self.request.user:
+            super().perform_destroy(instance)
 
 
 
@@ -45,6 +48,9 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
     def perform_destroy(self, instance):
+        if instance.user == self.request.user:
+            super().perform_destroy(instance)
+    def perform_update(self, instance):
         if instance.user == self.request.user:
             super().perform_destroy(instance)
 
@@ -75,4 +81,7 @@ class FollowDetailView(generics.RetrieveDestroyAPIView):
 
     def perform_destroy(self, instance):
         if instance.from_user == self.request.user:
+            super().perform_destroy(instance)
+    def perform_update(self, instance):
+        if instance.user == self.request.user:
             super().perform_destroy(instance)
