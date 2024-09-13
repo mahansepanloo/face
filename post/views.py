@@ -25,6 +25,10 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def perform_destroy(self, instance):
+        if instance.user == self.request.user:
+            super().perform_destroy(instance)
+
 
 
 class CommentListCreateView(generics.ListCreateAPIView):
@@ -40,7 +44,9 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
-
+    def perform_destroy(self, instance):
+        if instance.user == self.request.user:
+            super().perform_destroy(instance)
 
 class LikeListCreateView(generics.ListCreateAPIView):
     queryset = Like.objects.all()
@@ -60,7 +66,13 @@ class FollowListCreateView(generics.ListCreateAPIView):
         serializer.save(from_user=self.request.user)
 
 
+
+
 class FollowDetailView(generics.RetrieveDestroyAPIView):
     queryset = Follower.objects.all()
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def perform_destroy(self, instance):
+        if instance.from_user == self.request.user:
+            super().perform_destroy(instance)

@@ -11,16 +11,16 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id', 'user', 'post', 'body', 'created']
+        fields = ['id', 'post', 'body', 'created']
 
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = ['id', 'user', 'post']
+        fields = ['id', 'post']
 
 
 class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follower
-        fields = ['id', 'from_user', 'to_user', 'created']
+        fields = ['id', 'to_user', 'created']
