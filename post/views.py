@@ -25,12 +25,18 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def perform_destroy(self, instance):
-        if instance.user == self.request.user:
-            super().perform_destroy(instance)
-    def perform_update(self, instance):
-        if instance.user == self.request.user:
-            super().perform_destroy(instance)
+    # def perform_destroy(self, instance):
+    #     if instance.user == self.request.user:
+    #         super().perform_destroy(instance)
+    #
+    # def perform_update(self, instance):
+    #     print(instance)
+    #     if instance.user == self.request.user:
+    #         super().perform_destroy(instance)
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Post.objects.filter(user=self.request.user)
 
 
 
@@ -47,12 +53,15 @@ class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
-    def perform_destroy(self, instance):
-        if instance.user == self.request.user:
-            super().perform_destroy(instance)
-    def perform_update(self, instance):
-        if instance.user == self.request.user:
-            super().perform_destroy(instance)
+    # def perform_destroy(self, instance):
+    #     if instance.user == self.request.user:
+    #         super().perform_destroy(instance)
+    # def perform_update(self, instance):
+    #     if instance.user == self.request.user:
+    #         super().perform_destroy(instance)
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Post.objects.filter(user=self.request.user)
 
 class LikeListCreateView(generics.ListCreateAPIView):
     queryset = Like.objects.all()
@@ -79,9 +88,12 @@ class FollowDetailView(generics.RetrieveDestroyAPIView):
     serializer_class = FollowSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_destroy(self, instance):
-        if instance.from_user == self.request.user:
-            super().perform_destroy(instance)
-    def perform_update(self, instance):
-        if instance.user == self.request.user:
-            super().perform_destroy(instance)
+    # def perform_destroy(self, instance):
+    #     if instance.user == self.request.user:
+    #         super().perform_destroy(instance)
+    # def perform_update(self, instance):
+    #     if instance.user == self.request.user:
+    #         super().perform_destroy(instance)
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return Post.objects.filter(user=self.request.user)
